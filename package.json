@@ -6,7 +6,11 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx .",
+    "lint:fix": "eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx . --fix",
+    "format": "prettier --ignore-path .gitignore \"**/*.+(js|jsx|ts|tsx|css|html|md|json)\" --config ./.prettierrc",
+    "format:fix": "npm run format -- --write"
   },
   "dependencies": {
     "react": "^18.0.0",
@@ -26,6 +30,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.30.0",
     "husky": "^8.0.0",
+    "lint-staged": "^12.4.1",
     "prettier": "^2.6.2",
     "typescript": "^4.6.3",
     "vite": "^2.9.9"
