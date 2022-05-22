@@ -1,9 +1,5 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
-
 function App() {
-  return <></>
+  return <h1>Welcome</h1>
 }
 
 export default App
