@@ -14,7 +14,8 @@ function App() {
     <Router>
       <NavBar />
       <div className="container">
-        <div className="col-12 text-right">
+        <div className="d-flex justify-content-between">
+          <h1 className="text-center">Task Management Board</h1>
           <Button variant="info" onClick={() => setShowTaskEdit(!showTaskEdit)}>
             {!showTaskEdit && 'New Task'}
             {showTaskEdit && '➖'}
