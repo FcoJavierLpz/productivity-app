@@ -2,16 +2,22 @@ import { createSlice } from '@reduxjs/toolkit'
 import { collection, addDoc, getDocs } from 'firebase/firestore'
 import { db } from '../config/firebase'
 
+import { Task } from '../interfaces/Task'
+
 import { nanoid } from 'nanoid'
 
 const collectionRef = 'tasks'
 
+const initialState: {
+  list: Task[]
+  loading: boolean
+} = {
+  list: [],
+  loading: false
+}
 const slice = createSlice({
   name: 'tasks',
-  initialState: {
-    list: [],
-    loading: false
-  },
+  initialState,
   reducers: {
     tasksRequested: tasks => {
       tasks.loading = true
