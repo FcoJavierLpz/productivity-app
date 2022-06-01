@@ -24,7 +24,6 @@ const slice = createSlice({
     },
 
     tasksReceived: (tasks, action) => {
-      console.log('action', action.payload)
       tasks.list = action.payload
       tasks.loading = false
     },
@@ -61,7 +60,6 @@ export const getTasks = () => async dispatch => {
   try {
     const querySnapshot = await getDocs(collection(db, collectionRef))
     const tasks = querySnapshot.docs.map(doc => doc.data())
-    console.log('tasks', tasks)
     dispatch({ type: tasksRequested.type })
     dispatch({ type: tasksReceived.type, payload: tasks })
   } catch (error) {

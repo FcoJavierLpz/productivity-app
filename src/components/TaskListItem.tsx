@@ -8,13 +8,7 @@ interface TaskProps {
   onClick: () => void
 }
 
-const TaskListItem = ({
-  isCompleted,
-  title,
-  description,
-  duration,
-  onClick
-}: TaskProps) => {
+const TaskListItem = ({ description }: TaskProps) => {
   return <li>{description}</li>
 }
 
