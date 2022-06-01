@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { collection, addDoc, getDocs } from 'firebase/firestore'
 import { db } from '../config/firebase'
 
-// import { nanoid } from 'nanoid'
+import { nanoid } from 'nanoid'
 
 const collectionRef = 'tasks'
 
@@ -39,21 +39,25 @@ export default slice.reducer
 
 export const addTask = task => async dispatch => {
   try {
-    const response = await addDoc(collection(db, collectionRef), {
+    await addDoc(collection(db, collectionRef), {
+      id: nanoid(),
       ...task
     })
-    console.log(response)
-    // dispatch({ type: tasksReceived.type, payload: response }) // response.data
+
+    dispatch({ type: taskAdded.type, payload: task })
   } catch (error) {
     console.log('error', error)
     dispatch({ type: tasksRequestFailed.type })
   }
 }
 
-export const getTasks = async dispatch => {
+export const getTasks = () => async dispatch => {
   try {
     const querySnapshot = await getDocs(collection(db, collectionRef))
-    console.log('getTasks', querySnapshot)
+    const tasks = querySnapshot.docs.map(doc => doc.data())
+    console.log('tasks', tasks)
+    dispatch({ type: tasksRequested.type })
+    dispatch({ type: tasksReceived.type, payload: tasks })
   } catch (error) {
     dispatch({ type: tasksRequestFailed.type })
   }
