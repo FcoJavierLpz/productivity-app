@@ -10,7 +10,7 @@ const AddTask = () => {
     isCompleted: false,
     title: '',
     description: '',
-    duration: ''
+    duration: '02:00:00'
   }
   const [task, setTask] = useState<Task>(taskInitialState)
 
@@ -21,14 +21,17 @@ const AddTask = () => {
   const changeDuration = ({ target: { value } }) => {
     let [hours, minutes, seconds] = value.split(':')
 
+    if (!value) {
+      hours = '00'
+      minutes = '00'
+      seconds = '00'
+    }
+
     if (Number(hours) >= 2) {
       hours = '02'
       minutes = '00'
       seconds = '00'
     }
-
-    Number(hours) <= 0 && (hours = '00')
-    seconds || (seconds = '00')
 
     setTask({ ...task, duration: `${hours}:${minutes}:${seconds}` })
   }
