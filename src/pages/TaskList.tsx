@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-// import TaskListItem from '../components/TaskListItem'
+import TaskListItem from '../components/TaskListItem'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { getTasks } from '../store/tasks'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
@@ -119,7 +119,7 @@ const TaskList = () => {
                                       ...pvd.draggableProps.style
                                     }}
                                   >
-                                    {item.description}
+                                    <TaskListItem {...item} />
                                   </div>
                                 )
                               }}

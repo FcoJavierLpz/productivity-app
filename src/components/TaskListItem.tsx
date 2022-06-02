@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 interface TaskProps {
   isCompleted: boolean
   title: string
@@ -9,7 +8,12 @@ interface TaskProps {
 }
 
 const TaskListItem = ({ description }: TaskProps) => {
-  return <li>{description}</li>
+  return (
+    <>
+      <FontAwesomeIcon icon="redo" />
+      {description}
+    </>
+  )
 }
 
 export default TaskListItem
