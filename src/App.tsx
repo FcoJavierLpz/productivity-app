@@ -12,10 +12,12 @@ import {
   faCheck,
   faPlay,
   faPause,
-  faRedo
+  faRedo,
+  faPenSquare,
+  faTrash
 } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faCheck, faPlay, faPause, faRedo)
+library.add(faCheck, faPlay, faPause, faRedo, faPenSquare, faTrash)
 
 function App() {
   const [showTaskEdit, setShowTaskEdit] = useState(false)
