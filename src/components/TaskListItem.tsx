@@ -1,18 +1,22 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 interface TaskProps {
+  id: string
   title: string
   description: string
   duration: string
   isCompleted: boolean
   isActive: boolean
   onClick: () => void
+  editTask: (string) => void
 }
 
 const TaskListItem = ({
+  id,
   title,
   duration,
   isActive,
-  isCompleted
+  isCompleted,
+  onEditTask
 }: TaskProps) => {
   return (
     <div className="task-list d-flex justify-content-between align-items-center">
@@ -30,7 +34,9 @@ const TaskListItem = ({
         <small>{title}</small>
       </div>
       {isCompleted && <FontAwesomeIcon icon="check" />}
-      {!isActive && !isCompleted && <FontAwesomeIcon icon="pen-square" />}
+      {!isActive && !isCompleted && (
+        <FontAwesomeIcon icon="pen-square" onClick={() => onEditTask(id)} />
+      )}
       {!isActive && !isCompleted && <FontAwesomeIcon icon="trash" />}
     </div>
   )

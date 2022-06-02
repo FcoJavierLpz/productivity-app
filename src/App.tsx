@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import TaskEdit from './components/TaskEdit'
@@ -7,6 +7,8 @@ import NotFound from './pages/NotFound'
 import TaskList from './pages/TaskList'
 import { Button } from 'react-bootstrap'
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { useAppSelector } from './hooks'
+import { getTaskById } from './store/tasks'
 
 import {
   faCheck,
@@ -20,7 +22,20 @@ import {
 library.add(faCheck, faPlay, faPause, faRedo, faPenSquare, faTrash)
 
 function App() {
-  const [showTaskEdit, setShowTaskEdit] = useState(false)
+  const [showTaskEdit, setShowTaskEdit] = useState<boolean>(false)
+  const [taskToUpdate, setTaskToUpdate] = useState<object | null>(null)
+  const [taskId, setTaskId] = useState<string>('')
+
+  const task = useAppSelector(getTaskById(taskId))
+
+  const editTaskFromList = id => {
+    setTaskId(id)
+    setShowTaskEdit(true)
+  }
+
+  useEffect(() => {
+    setTaskToUpdate(task)
+  }, [task])
 
   return (
     <Router>
@@ -33,9 +48,12 @@ function App() {
             {showTaskEdit && '➖'}
           </Button>
         </div>
-        {showTaskEdit && <TaskEdit />}
+        {showTaskEdit && <TaskEdit taskToUpdate={taskToUpdate} />}
         <Routes>
-          <Route path="/" element={<TaskList />} />
+          <Route
+            path="/"
+            element={<TaskList onEditTask={editTaskFromList} />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

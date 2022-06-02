@@ -46,7 +46,7 @@ const onDragEnd = (result, columns, setColumns) => {
     })
   }
 }
-const TaskList = () => {
+const TaskList = ({ onEditTask }) => {
   const activeTasks = useAppSelector(getActiveTasks)
   const desactiveTasks = useAppSelector(getDesactiveTasks)
   const completeTasks = useAppSelector(getCompletedTasks)
@@ -131,7 +131,10 @@ const TaskList = () => {
                                       ...pvd.draggableProps.style
                                     }}
                                   >
-                                    <TaskListItem {...item} />
+                                    <TaskListItem
+                                      {...item}
+                                      onEditTask={onEditTask}
+                                    />
                                   </div>
                                 )
                               }}

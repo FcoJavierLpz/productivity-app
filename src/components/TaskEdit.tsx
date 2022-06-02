@@ -3,9 +3,10 @@ import { Form, Button } from 'react-bootstrap'
 import { Task } from '../interfaces/Task'
 import { addTask } from '../store/tasks'
 import { useAppDispatch } from '../hooks'
-const AddTask = () => {
-  const dispatch = useAppDispatch()
 
+const AddTask = ({ taskToUpdate }) => {
+  const dispatch = useAppDispatch()
+  console.log('add-task', taskToUpdate)
   const taskInitialState = {
     id: '',
     title: '',

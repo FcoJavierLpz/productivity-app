@@ -11,11 +11,13 @@ const collectionRef = 'tasks'
 
 const initialState: {
   list: Task[]
+  editTask: Task | null
   loading: boolean
 } = {
   list: [],
   loading: false
 }
+
 const slice = createSlice({
   name: 'tasks',
   initialState,
@@ -69,15 +71,6 @@ export const getTasks = () => async dispatch => {
   }
 }
 
-export const getTask = taskId => async dispatch => {
-  try {
-    const querySnapshot = await getDocs(collection(db, collectionRef, taskId))
-    console.log('getTasks', querySnapshot)
-  } catch (error) {
-    dispatch({ type: tasksRequestFailed.type })
-  }
-}
-
 export const updateTask = taskId => async dispatch => {
   try {
     console.log('update task', taskId)
@@ -106,3 +99,8 @@ export const getActiveTasks = createSelector(selectTaskList, tasks =>
 export const getCompletedTasks = createSelector(selectTaskList, tasks =>
   tasks.filter(task => task.isCompleted)
 )
+
+export const getTaskById = taskId =>
+  createSelector(selectTaskList, tasks =>
+    tasks.find(task => task.id === taskId)
+  )
