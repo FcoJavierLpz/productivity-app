@@ -7,11 +7,13 @@ const AddTask = () => {
   const dispatch = useAppDispatch()
 
   const taskInitialState = {
-    isCompleted: false,
+    id: '',
     title: '',
     description: '',
-    duration: '02:00:00'
+    duration: '02:00:00',
+    isCompleted: false
   }
+
   const [task, setTask] = useState<Task>(taskInitialState)
 
   const resetState = () => setTask(taskInitialState)
