@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { createSelector } from 'reselect'
 import { collection, addDoc, getDocs } from 'firebase/firestore'
 import { db } from '../config/firebase'
 
@@ -44,14 +45,15 @@ export default slice.reducer
 
 export const addTask = task => async dispatch => {
   try {
-    await addDoc(collection(db, collectionRef), {
-      id: nanoid(),
-      ...task
-    })
+    const newTask = {
+      ...task,
+      id: nanoid()
+    }
 
-    dispatch({ type: taskAdded.type, payload: task })
+    await addDoc(collection(db, collectionRef), newTask)
+
+    dispatch({ type: taskAdded.type, payload: newTask })
   } catch (error) {
-    console.log('error', error)
     dispatch({ type: tasksRequestFailed.type })
   }
 }
@@ -91,3 +93,16 @@ export const deleteTask = taskId => async dispatch => {
     dispatch({ type: tasksRequestFailed.type })
   }
 }
+const selectTaskList = state => state.entities.tasks.list
+
+export const getDesactiveTasks = createSelector(selectTaskList, tasks =>
+  tasks.filter(task => !task.isActive && !task.isCompleted)
+)
+
+export const getActiveTasks = createSelector(selectTaskList, tasks =>
+  tasks.filter(task => task.isActive)
+)
+
+export const getCompletedTasks = createSelector(selectTaskList, tasks =>
+  tasks.filter(task => task.isCompleted)
+)

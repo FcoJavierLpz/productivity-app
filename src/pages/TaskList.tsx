@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react'
 
 import TaskListItem from '../components/TaskListItem'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { getTasks } from '../store/tasks'
+import {
+  getTasks,
+  getActiveTasks,
+  getDesactiveTasks,
+  getCompletedTasks
+} from '../store/tasks'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 const onDragEnd = (result, columns, setColumns) => {
@@ -42,17 +47,24 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 }
 const TaskList = () => {
-  const tasks = useAppSelector(state => state.entities.tasks.list)
+  const activeTasks = useAppSelector(getActiveTasks)
+  const desactiveTasks = useAppSelector(getDesactiveTasks)
+  const completeTasks = useAppSelector(getCompletedTasks)
+
   const dispatch = useAppDispatch()
 
   const taskStatus = {
     toDo: {
       name: 'To do',
-      items: tasks
+      items: desactiveTasks
     },
     inProgress: {
-      name: 'In Progress',
-      items: []
+      name: 'Running',
+      items: activeTasks
+    },
+    done: {
+      name: 'Done',
+      items: completeTasks
     }
   }
 
@@ -64,7 +76,7 @@ const TaskList = () => {
 
   useEffect(() => {
     setColumns(taskStatus)
-  }, [tasks])
+  }, [activeTasks, desactiveTasks, completeTasks])
 
   return (
     <div>
