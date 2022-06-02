@@ -6,6 +6,16 @@ import NavBar from './components/NavBar'
 import NotFound from './pages/NotFound'
 import TaskList from './pages/TaskList'
 import { Button } from 'react-bootstrap'
+import { library } from '@fortawesome/fontawesome-svg-core'
+
+import {
+  faCheck,
+  faPlay,
+  faPause,
+  faRedo
+} from '@fortawesome/free-solid-svg-icons'
+
+library.add(faCheck, faPlay, faPause, faRedo)
 
 function App() {
   const [showTaskEdit, setShowTaskEdit] = useState(false)
