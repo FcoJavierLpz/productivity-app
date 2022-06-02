@@ -7,12 +7,25 @@ interface TaskProps {
   onClick: () => void
 }
 
-const TaskListItem = ({ description }: TaskProps) => {
+const TaskListItem = ({ title, description, duration }: TaskProps) => {
   return (
-    <>
-      <FontAwesomeIcon icon="redo" />
-      {description}
-    </>
+    <div className="task-list d-flex justify-content-between align-items-center">
+      <FontAwesomeIcon icon="play" />
+      <div className="d-flex flex-column">
+        <span>Time</span>
+        <small>{duration}</small>
+      </div>
+      <div className="d-flex flex-column">
+        <span>Spend</span>
+        <small>{duration}</small>
+      </div>
+      <div className="d-flex flex-column">
+        <span>Task</span>
+        <small>{title}</small>
+      </div>
+      <FontAwesomeIcon icon="pen-square" />
+      <FontAwesomeIcon icon="trash" />
+    </div>
   )
 }
 
