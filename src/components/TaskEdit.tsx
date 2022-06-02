@@ -11,7 +11,8 @@ const AddTask = () => {
     title: '',
     description: '',
     duration: '02:00:00',
-    isCompleted: false
+    isCompleted: false,
+    isActive: false
   }
 
   const [task, setTask] = useState<Task>(taskInitialState)
