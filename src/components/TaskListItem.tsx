@@ -29,6 +29,7 @@ const TaskListItem = ({
         <span>Task</span>
         <small>{title}</small>
       </div>
+      {isCompleted && <FontAwesomeIcon icon="check" />}
       {!isActive && !isCompleted && <FontAwesomeIcon icon="pen-square" />}
       {!isActive && !isCompleted && <FontAwesomeIcon icon="trash" />}
     </div>
