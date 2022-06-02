@@ -59,7 +59,7 @@ const TaskList = () => {
       items: desactiveTasks
     },
     inProgress: {
-      name: 'Running',
+      name: 'In Progress',
       items: activeTasks
     },
     done: {
