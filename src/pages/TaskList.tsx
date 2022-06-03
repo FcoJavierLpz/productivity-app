@@ -6,7 +6,8 @@ import {
   getTasks,
   getActiveTasks,
   getDesactiveTasks,
-  getCompletedTasks
+  getCompletedTasks,
+  editTask
 } from '../store/tasks'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
@@ -46,7 +47,7 @@ const onDragEnd = (result, columns, setColumns) => {
     })
   }
 }
-const TaskList = ({ onEditTask }) => {
+const TaskList = () => {
   const activeTasks = useAppSelector(getActiveTasks)
   const desactiveTasks = useAppSelector(getDesactiveTasks)
   const completeTasks = useAppSelector(getCompletedTasks)
@@ -133,7 +134,9 @@ const TaskList = ({ onEditTask }) => {
                                   >
                                     <TaskListItem
                                       {...item}
-                                      onEditTask={onEditTask}
+                                      onEditTask={() =>
+                                        dispatch(editTask(item))
+                                      }
                                     />
                                   </div>
                                 )

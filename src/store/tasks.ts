@@ -11,10 +11,21 @@ const collectionRef = 'tasks'
 
 const initialState: {
   list: Task[]
-  editTask: Task | null
+  taskToUpdate: Task
+  showTaskEdit: boolean
   loading: boolean
 } = {
   list: [],
+  taskToUpdate: {
+    id: '',
+    title: '',
+    description: '',
+    duration: '02:00:00',
+    isCompleted: false,
+    isActive: false,
+    isStandard: true
+  },
+  showTaskEdit: false,
   loading: false
 }
 
@@ -36,12 +47,25 @@ const slice = createSlice({
     },
     taskAdded: (tasks, action) => {
       tasks.list.push(action.payload)
+    },
+    setShowTaskEdit: (tasks, action) => {
+      tasks.showTaskEdit = !action.payload
+    },
+    editTask: (tasks, action) => {
+      tasks.taskToUpdate = action.payload
+      tasks.showTaskEdit = true
     }
   }
 })
 
-export const { taskAdded, tasksReceived, tasksRequested, tasksRequestFailed } =
-  slice.actions
+export const {
+  taskAdded,
+  tasksReceived,
+  tasksRequested,
+  tasksRequestFailed,
+  setShowTaskEdit,
+  editTask
+} = slice.actions
 
 export default slice.reducer
 

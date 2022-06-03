@@ -1,26 +1,33 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { Task } from '../interfaces/Task'
 import { addTask } from '../store/tasks'
-import { useAppDispatch } from '../hooks'
+import { useAppDispatch, useAppSelector } from '../hooks'
 
-const AddTask = ({ taskToUpdate }) => {
+const AddTask = () => {
   const dispatch = useAppDispatch()
-  console.log('add-task', taskToUpdate)
-  const taskInitialState = {
+  const taskToUpdate = useAppSelector(
+    state => state.entities.tasks.taskToUpdate
+  )
+
+  const taskInitialState = taskToUpdate ?? {
     id: '',
     title: '',
     description: '',
     duration: '02:00:00',
     isCompleted: false,
-    isActive: false
+    isActive: false,
+    isStandard: true
   }
 
   const [task, setTask] = useState<Task>(taskInitialState)
 
-  const resetState = () => setTask(taskInitialState)
+  useEffect(() => {
+    console.log('initialState', taskInitialState)
+    setTask(taskInitialState)
+  }, [taskInitialState])
 
-  const [isStandard, setIsStandard] = useState(true)
+  const resetState = () => setTask(taskInitialState)
 
   const changeDuration = ({ target: { value } }) => {
     let [hours, minutes, seconds] = value.split(':')
@@ -60,6 +67,7 @@ const AddTask = ({ taskToUpdate }) => {
             name="title"
             required
             placeholder="Title"
+            value={task.title}
             onChange={({ target: { value } }) =>
               setTask({ ...task, title: value })
             }
@@ -73,6 +81,7 @@ const AddTask = ({ taskToUpdate }) => {
             name="description"
             required
             placeholder="description"
+            value={task.description}
             onChange={({ target: { value } }) =>
               setTask({ ...task, description: value })
             }
@@ -86,22 +95,24 @@ const AddTask = ({ taskToUpdate }) => {
               <Form.Check
                 inline
                 name="typeDuration"
-                onChange={() => setIsStandard(true)}
+                onChange={() => setTask({ ...task, isStandard: true })}
                 label="Standard"
                 type="radio"
                 id="standard"
+                checked={task.isStandard}
               />
               <Form.Check
                 inline
                 name="typeDuration"
-                onChange={() => setIsStandard(false)}
+                onChange={() => setTask({ ...task, isStandard: false })}
                 label="Custom"
                 type="radio"
                 id="custom"
+                checked={!task.isStandard}
               />
             </div>
           </Form.Label>
-          {isStandard ? (
+          {task.isStandard ? (
             <Form.Control name="duration" onChange={changeDuration} as="select">
               <option value="00:30:00">Corta: 30 minutos</option>
               <option value="00:45:00">Media: 45 minutos</option>

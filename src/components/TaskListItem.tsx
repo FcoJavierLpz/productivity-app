@@ -7,11 +7,10 @@ interface TaskProps {
   isCompleted: boolean
   isActive: boolean
   onClick: () => void
-  editTask: (string) => void
+  onEditTask: () => void
 }
 
 const TaskListItem = ({
-  id,
   title,
   duration,
   isActive,
@@ -35,7 +34,7 @@ const TaskListItem = ({
       </div>
       {isCompleted && <FontAwesomeIcon icon="check" />}
       {!isActive && !isCompleted && (
-        <FontAwesomeIcon icon="pen-square" onClick={() => onEditTask(id)} />
+        <FontAwesomeIcon icon="pen-square" onClick={onEditTask} />
       )}
       {!isActive && !isCompleted && <FontAwesomeIcon icon="trash" />}
     </div>

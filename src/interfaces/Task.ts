@@ -5,4 +5,5 @@ export interface Task {
   duration: string
   isCompleted: boolean
   isActive: boolean
+  isStandard: boolean
 }
