@@ -7,7 +7,8 @@ import {
   getActiveTasks,
   getDesactiveTasks,
   getCompletedTasks,
-  editTask
+  editTask,
+  deleteTask
 } from '../store/tasks'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
@@ -136,6 +137,9 @@ const TaskList = () => {
                                       {...item}
                                       onEditTask={() =>
                                         dispatch(editTask(item))
+                                      }
+                                      onDeleteTask={() =>
+                                        dispatch(deleteTask(item.id))
                                       }
                                     />
                                   </div>

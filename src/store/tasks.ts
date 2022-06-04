@@ -1,6 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createSelector } from 'reselect'
-import { collection, doc, addDoc, getDocs, updateDoc } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  addDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc
+} from 'firebase/firestore'
 import { db } from '../config/firebase'
 
 import { Task } from '../interfaces/Task'
@@ -45,6 +52,10 @@ const slice = createSlice({
       const index = tasks.list.findIndex(task => task.id === action.payload.id)
       tasks.list[index] = action.payload
     },
+    taskDeleted: (tasks, action) => {
+      const index = tasks.list.findIndex(task => task.id === action.payload)
+      tasks.list.splice(index, 1)
+    },
     setShowTaskEdit: (tasks, action) => {
       tasks.showTaskEdit = !action.payload
     },
@@ -61,6 +72,7 @@ const slice = createSlice({
 export const {
   taskAdded,
   taskUpdated,
+  taskDeleted,
   tasksReceived,
   tasksRequested,
   tasksRequestFailed,
@@ -71,28 +83,13 @@ export const {
 
 export default slice.reducer
 
-export const addTask = task => async dispatch => {
-  try {
-    const newTask = {
-      ...task,
-      id: nanoid()
-    }
-
-    await addDoc(collection(db, collectionRef), newTask)
-
-    dispatch({ type: taskAdded.type, payload: newTask })
-  } catch (error) {
-    dispatch({ type: tasksRequestFailed.type })
-  }
-}
-
 export const getTasks = () => async dispatch => {
   try {
     const querySnapshot = await getDocs(collection(db, collectionRef))
     const tasks = querySnapshot.docs.map(document => {
       return {
         ...document.data(),
-        docId: document.id
+        id: document.id
       }
     })
     dispatch({ type: tasksRequested.type })
@@ -102,10 +99,26 @@ export const getTasks = () => async dispatch => {
   }
 }
 
+export const addTask = task => async dispatch => {
+  try {
+    const newTask = {
+      ...task
+    }
+
+    const response = await addDoc(collection(db, collectionRef), newTask)
+
+    dispatch({
+      type: taskAdded.type,
+      payload: { ...newTask, id: response.id }
+    })
+  } catch (error) {
+    dispatch({ type: tasksRequestFailed.type })
+  }
+}
+
 export const updateTask = task => async dispatch => {
   try {
-    console.log('update task', task)
-    const taskRef = doc(db, collectionRef, task.docId)
+    const taskRef = doc(db, collectionRef, task.id)
     await updateDoc(taskRef, task)
 
     dispatch({ type: taskUpdated.type, payload: task })
@@ -114,9 +127,12 @@ export const updateTask = task => async dispatch => {
   }
 }
 
-export const deleteTask = taskId => async dispatch => {
+export const deleteTask = id => async dispatch => {
   try {
-    console.log('taskId Remove', taskId)
+    const taskRef = doc(db, collectionRef, id)
+    await deleteDoc(taskRef)
+
+    dispatch({ type: taskDeleted.type, payload: id })
   } catch (error) {
     dispatch({ type: tasksRequestFailed.type })
   }

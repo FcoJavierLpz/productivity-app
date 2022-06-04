@@ -5,7 +5,7 @@ import { initialTask } from '../constants/tasks'
 import { addTask, updateTask, removeTaskToUpdate } from '../store/tasks'
 import { useAppDispatch, useAppSelector } from '../hooks'
 
-const AddTask = () => {
+const TaskEdit = () => {
   const dispatch = useAppDispatch()
   const taskToUpdate = useAppSelector(
     state => state.entities.tasks.taskToUpdate
@@ -137,4 +137,4 @@ const AddTask = () => {
   )
 }
 
-export default AddTask
+export default TaskEdit

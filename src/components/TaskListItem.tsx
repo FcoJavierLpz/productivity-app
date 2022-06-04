@@ -6,8 +6,8 @@ interface TaskProps {
   duration: string
   isCompleted: boolean
   isActive: boolean
-  onClick: () => void
   onEditTask: () => void
+  onDeleteTask: () => void
 }
 
 const TaskListItem = ({
@@ -15,7 +15,8 @@ const TaskListItem = ({
   duration,
   isActive,
   isCompleted,
-  onEditTask
+  onEditTask,
+  onDeleteTask
 }: TaskProps) => {
   return (
     <div className="task-list d-flex justify-content-between align-items-center">
@@ -36,7 +37,9 @@ const TaskListItem = ({
       {!isActive && !isCompleted && (
         <FontAwesomeIcon icon="pen-square" onClick={onEditTask} />
       )}
-      {!isActive && !isCompleted && <FontAwesomeIcon icon="trash" />}
+      {!isActive && !isCompleted && (
+        <FontAwesomeIcon icon="trash" onClick={onDeleteTask} />
+      )}
     </div>
   )
 }
