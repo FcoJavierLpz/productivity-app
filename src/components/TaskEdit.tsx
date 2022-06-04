@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { Task } from '../interfaces/Task'
+import { initialTask } from '../constants/tasks'
 import { addTask, updateTask, removeTaskToUpdate } from '../store/tasks'
 import { useAppDispatch, useAppSelector } from '../hooks'
 
@@ -10,26 +11,16 @@ const AddTask = () => {
     state => state.entities.tasks.taskToUpdate
   )
 
-  const taskInitialState = taskToUpdate ?? {
-    id: '',
-    title: '',
-    description: '',
-    duration: '02:00:00',
-    isCompleted: false,
-    isActive: false,
-    isStandard: true
-  }
-
-  const [task, setTask] = useState<Task>(taskInitialState)
-  const resetState = () => setTask(taskInitialState)
+  const [task, setTask] = useState<Task>(initialTask)
+  const resetState = () => setTask(initialTask)
 
   useEffect(() => {
-    setTask(taskInitialState)
-  }, [taskInitialState])
+    setTask(taskToUpdate ?? initialTask)
+  }, [taskToUpdate ?? initialTask])
 
   useEffect(() => {
     return () => {
-      dispatch(removeTaskToUpdate(null))
+      dispatch(removeTaskToUpdate(initialTask))
     }
   }, [])
 
