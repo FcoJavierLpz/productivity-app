@@ -54,6 +54,9 @@ const slice = createSlice({
     editTask: (tasks, action) => {
       tasks.taskToUpdate = action.payload
       tasks.showTaskEdit = true
+    },
+    removeTaskToUpdate: (tasks, action) => {
+      tasks.taskToUpdate = action.payload
     }
   }
 })
@@ -64,7 +67,8 @@ export const {
   tasksRequested,
   tasksRequestFailed,
   setShowTaskEdit,
-  editTask
+  editTask,
+  removeTaskToUpdate
 } = slice.actions
 
 export default slice.reducer

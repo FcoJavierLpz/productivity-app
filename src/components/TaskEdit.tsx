@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { Task } from '../interfaces/Task'
-import { addTask } from '../store/tasks'
+import { addTask, updateTask, removeTaskToUpdate } from '../store/tasks'
 import { useAppDispatch, useAppSelector } from '../hooks'
 
 const AddTask = () => {
@@ -21,13 +21,17 @@ const AddTask = () => {
   }
 
   const [task, setTask] = useState<Task>(taskInitialState)
+  const resetState = () => setTask(taskInitialState)
 
   useEffect(() => {
-    console.log('initialState', taskInitialState)
     setTask(taskInitialState)
   }, [taskInitialState])
 
-  const resetState = () => setTask(taskInitialState)
+  useEffect(() => {
+    return () => {
+      dispatch(removeTaskToUpdate(null))
+    }
+  }, [])
 
   const changeDuration = ({ target: { value } }) => {
     let [hours, minutes, seconds] = value.split(':')
@@ -50,11 +54,13 @@ const AddTask = () => {
   const handleSubmit = e => {
     e.preventDefault()
 
-    if (task.title) {
+    if (!task.id && task.title) {
       dispatch(addTask(task))
-      console.log('task saved', task)
       resetState()
+      return
     }
+
+    dispatch(updateTask(task))
   }
   return (
     <div className="card">
