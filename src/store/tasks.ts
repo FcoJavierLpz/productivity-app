@@ -137,14 +137,15 @@ export const deleteTask = id => async dispatch => {
     dispatch({ type: tasksRequestFailed.type })
   }
 }
+
 const selectTaskList = state => state.entities.tasks.list
 
-export const getDesactiveTasks = createSelector(selectTaskList, tasks =>
-  tasks.filter(task => !task.isActive && !task.isCompleted)
+export const getTodoTasks = createSelector(selectTaskList, tasks =>
+  tasks.filter(task => !task.isInProgress && !task.isCompleted)
 )
 
-export const getActiveTasks = createSelector(selectTaskList, tasks =>
-  tasks.filter(task => task.isActive)
+export const getInProgressTasks = createSelector(selectTaskList, tasks =>
+  tasks.filter(task => task.isInProgress)
 )
 
 export const getCompletedTasks = createSelector(selectTaskList, tasks =>

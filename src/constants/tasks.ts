@@ -4,7 +4,7 @@ const initialTask = {
   description: '',
   duration: '02:00:00',
   isCompleted: false,
-  isActive: false,
+  isInProgress: false,
   isStandard: true
 }
 
