@@ -144,13 +144,13 @@ export const checkTask = (id, toContainer) => async dispatch => {
     const isInProgress = toContainer === inProgress
     const isCompleted = toContainer === done
 
-    const taskRef = doc(db, collectionRef, id)
-    await updateDoc(taskRef, { isInProgress, isCompleted })
-
     dispatch({
       type: taskUpdated.type,
       payload: { id, isInProgress, isCompleted }
     })
+
+    const taskRef = doc(db, collectionRef, id)
+    await updateDoc(taskRef, { isInProgress, isCompleted })
   } catch (error) {
     dispatch({ type: tasksRequestFailed.type })
   }
