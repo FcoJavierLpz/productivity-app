@@ -13,9 +13,9 @@ import { db } from '../config/firebase'
 import { Task } from '../interfaces/Task'
 import { initialTask } from '../constants/tasks'
 
-import { nanoid } from 'nanoid'
-
 const collectionRef = 'tasks'
+const inProgress = 'inProgress'
+const done = 'done'
 
 const initialState: {
   list: Task[]
@@ -30,7 +30,7 @@ const initialState: {
 }
 
 const slice = createSlice({
-  name: 'tasks',
+  name: collectionRef,
   initialState,
   reducers: {
     tasksRequested: tasks => {
@@ -49,8 +49,9 @@ const slice = createSlice({
       tasks.list.push(action.payload)
     },
     taskUpdated: (tasks, action) => {
-      const index = tasks.list.findIndex(task => task.id === action.payload.id)
-      tasks.list[index] = action.payload
+      const task = tasks.list.find(tsk => tsk.id === action.payload.id)
+      const index = tasks.list.findIndex(tsk => tsk.id === action.payload.id)
+      tasks.list[index] = { ...task, ...action.payload }
     },
     taskDeleted: (tasks, action) => {
       const index = tasks.list.findIndex(task => task.id === action.payload)
@@ -133,6 +134,23 @@ export const deleteTask = id => async dispatch => {
     await deleteDoc(taskRef)
 
     dispatch({ type: taskDeleted.type, payload: id })
+  } catch (error) {
+    dispatch({ type: tasksRequestFailed.type })
+  }
+}
+
+export const checkTask = (id, toContainer) => async dispatch => {
+  try {
+    const isInProgress = toContainer === inProgress
+    const isCompleted = toContainer === done
+
+    const taskRef = doc(db, collectionRef, id)
+    await updateDoc(taskRef, { isInProgress, isCompleted })
+
+    dispatch({
+      type: taskUpdated.type,
+      payload: { id, isInProgress, isCompleted }
+    })
   } catch (error) {
     dispatch({ type: tasksRequestFailed.type })
   }
