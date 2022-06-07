@@ -54,7 +54,7 @@ const TaskEdit = () => {
     dispatch(updateTask(task))
   }
   return (
-    <div className="card">
+    <div className="card p-3">
       <h3>Add Task</h3>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="title">
