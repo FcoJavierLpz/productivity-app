@@ -29,9 +29,8 @@ function App() {
   return (
     <Router>
       <NavBar />
-      <div className="container">
-        <div className="d-flex justify-content-between">
-          <h1 className="text-center">Task Management Board</h1>
+      <div className="container mt-3">
+        <div className="d-flex justify-content-end pb-2">
           <Button
             variant="info"
             onClick={() => dispatch(setShowTaskEdit(showTaskEdit))}
