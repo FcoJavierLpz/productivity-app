@@ -1,4 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import CountDown from './CountDown'
+
 interface TaskProps {
   id: string
   title: string
@@ -18,9 +20,13 @@ const TaskListItem = ({
   onEditTask,
   onDeleteTask
 }: TaskProps) => {
+  const [hours, minutes, seconds] = duration.split(':').map(Number)
+
   return (
     <div className="task-list d-flex justify-content-between align-items-center">
-      {isInProgress && <FontAwesomeIcon icon="play" />}
+      {isInProgress && (
+        <CountDown hours={hours} minutes={minutes} seconds={seconds} />
+      )}
       <div className="d-flex flex-column">
         <span>Time</span>
         <small>{duration}</small>
