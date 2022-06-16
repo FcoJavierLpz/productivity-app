@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const CountDown = ({ hours = 0, minutes = 0, seconds = 0 }) => {
+const CountDown = ({ hours = 0, minutes = 0, seconds = 0, onCountDown }) => {
   const [paused, setPaused] = useState(false)
   const [over, setOver] = useState(false)
   const [[h, m, s], setTime] = useState([hours, minutes, seconds])
@@ -28,16 +28,17 @@ const CountDown = ({ hours = 0, minutes = 0, seconds = 0 }) => {
     const timerID = setInterval(() => tick(), 1000)
 
     return () => {
+      onCountDown([h, m, s])
       clearInterval(timerID)
     }
   })
 
   return (
     <>
-      <p>{`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s
+      <span>{`${h.toString().padStart(2, '0')}:${m
         .toString()
-        .padStart(2, '0')}`}</p>
-      <div>{over ? "Time's up!" : ''}</div>
+        .padStart(2, '0')}:${s.toString().padStart(2, '0')}`}</span>
+      <small>{over ? "Time's up!" : ''}</small>
       <button
         onClick={() => {
           setPaused(!paused)

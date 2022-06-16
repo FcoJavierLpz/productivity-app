@@ -139,18 +139,18 @@ export const deleteTask = id => async dispatch => {
   }
 }
 
-export const checkTask = (id, toContainer) => async dispatch => {
+export const checkTask = (id, history, toContainer) => async dispatch => {
   try {
     const isInProgress = toContainer === inProgress
     const isCompleted = toContainer === done
 
     dispatch({
       type: taskUpdated.type,
-      payload: { id, isInProgress, isCompleted }
+      payload: { id, isInProgress, history, isCompleted }
     })
 
     const taskRef = doc(db, collectionRef, id)
-    await updateDoc(taskRef, { isInProgress, isCompleted })
+    await updateDoc(taskRef, { isInProgress, history, isCompleted })
   } catch (error) {
     dispatch({ type: tasksRequestFailed.type })
   }

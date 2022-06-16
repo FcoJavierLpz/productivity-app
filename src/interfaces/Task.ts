@@ -6,4 +6,8 @@ export interface Task {
   isCompleted: boolean
   isInProgress: boolean
   isStandard: boolean
+  history: {
+    date: string
+    spendTime: string
+  } | null
 }
