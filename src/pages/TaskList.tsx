@@ -130,7 +130,10 @@ const TaskList = () => {
                           </Draggable>
                         ))
                       ) : (
-                        <div>Vacio</div>
+                        <div className="d-flex flex-column mt-3 align-items-center">
+                          <span className="m-0">No tasks to show</span>
+                          <span>drag and drop to add tasks</span>
+                        </div>
                       )}
                       {provided.placeholder}
                     </div>
