@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import TaskListItem from '../components/TaskListItem'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { History } from '../interfaces/History'
+import useTaskHistory from '../hooks/useTaskHistory'
 import {
   getTasks,
   getInProgressTasks,
@@ -18,68 +18,8 @@ const TaskList = () => {
   const inProgressTasks = useAppSelector(getInProgressTasks)
   const todoTasks = useAppSelector(getTodoTasks)
   const completeTasks = useAppSelector(getCompletedTasks)
-  const [taskHistory, setTaskHistory] = useState<History[]>([])
+  const { taskHistory, handleCountDown, getTimeHistory } = useTaskHistory()
   const dispatch = useAppDispatch()
-
-  const calculateRemainingTime = (
-    duration: string,
-    [endHours, endMinutes, endSeconds]: number[]
-  ): string => {
-    let [startHours, startMinutes, startSeconds] = duration
-      .split(':')
-      .map(Number)
-    let [countHours, countMinutes, countSeconds] = [0, 0, 0]
-
-    if (startMinutes === 0) {
-      startMinutes = 60
-    }
-
-    if (startSeconds === 0) {
-      startSeconds = 60
-    }
-
-    if (startSeconds < endSeconds) {
-      startSeconds += 60
-      startMinutes--
-    }
-
-    if (startMinutes < endMinutes) {
-      startMinutes += 60
-      startHours--
-    }
-
-    countSeconds = startSeconds - endSeconds
-    startMinutes === 60 && startHours--
-    startSeconds === 60 && startMinutes--
-    countMinutes = startMinutes - endMinutes
-    countHours = startHours - endHours
-
-    if (countSeconds === 60) {
-      countSeconds = 0
-      countMinutes++
-    }
-
-    if (countMinutes === 60) {
-      countMinutes = 0
-      countHours++
-    }
-
-    return `${countHours.toString().padStart(2, '0')}:${countMinutes
-      .toString()
-      .padStart(2, '0')}:${countSeconds.toString().padStart(2, '0')}`
-  }
-
-  const getTimeHistory = (taskId, history) => {
-    const findTask = history.find(h => h.id === taskId)
-
-    const spendTime =
-      findTask && calculateRemainingTime(findTask.duration, findTask.timeLeft)
-
-    return {
-      spendTime,
-      date: new Date().toLocaleString()
-    }
-  }
 
   const onDragEnd = (result, history) => {
     const { destination, source, draggableId } = result
@@ -113,10 +53,6 @@ const TaskList = () => {
   }
 
   const [columns, setColumns] = useState(taskStatus)
-
-  const handleFinishTask = (taskId, duration, timeLeft) => {
-    setTaskHistory([{ id: taskId, duration, timeLeft }])
-  }
 
   useEffect(() => {
     dispatch(getTasks())
@@ -181,8 +117,8 @@ const TaskList = () => {
                                   onDeleteTask={() =>
                                     dispatch(deleteTask(item.id))
                                   }
-                                  onFinishTask={timeLeft =>
-                                    handleFinishTask(
+                                  onCountDown={timeLeft =>
+                                    handleCountDown(
                                       item.id,
                                       item.duration,
                                       timeLeft

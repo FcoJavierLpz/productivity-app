@@ -12,7 +12,7 @@ interface TaskProps {
   isInProgress: boolean
   onEditTask: () => void
   onDeleteTask: () => void
-  onFinishTask: (time: number[]) => void
+  onCountDown: (time: number[]) => void
 }
 
 const TaskListItem = ({
@@ -23,7 +23,7 @@ const TaskListItem = ({
   isCompleted,
   onEditTask,
   onDeleteTask,
-  onFinishTask
+  onCountDown
 }: TaskProps) => {
   const [hours, minutes, seconds] = duration.split(':').map(Number)
   const [hourLeft, setHourLeft] = useState(0)
@@ -38,7 +38,7 @@ const TaskListItem = ({
   useEffect(() => {
     return () => {
       if (isInProgress) {
-        onFinishTask([hourLeft, minuteLeft, secondLeft])
+        onCountDown([hourLeft, minuteLeft, secondLeft])
       }
     }
   }, [hourLeft, minuteLeft, secondLeft])
@@ -66,7 +66,7 @@ const TaskListItem = ({
       )}
 
       <div className="d-flex flex-column">
-        <span>Task</span>
+        <span>Title</span>
         <small>{title}</small>
       </div>
       {isCompleted && <FontAwesomeIcon icon="check" />}
