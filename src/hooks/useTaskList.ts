@@ -8,14 +8,14 @@ import {
   checkTask
 } from '../store/tasks'
 
-const useTaskList = getTimeHistory => {
+const useTaskList = () => {
   const inProgressTasks = useAppSelector(getInProgressTasks)
   const todoTasks = useAppSelector(getTodoTasks)
   const completeTasks = useAppSelector(getCompletedTasks)
 
   const dispatch = useAppDispatch()
 
-  const onDragEnd = (result, history) => {
+  const onDragEnd = (result, taskHistory, getTimeHistory) => {
     const { destination, source, draggableId } = result
 
     if (!result.destination) return
@@ -24,7 +24,7 @@ const useTaskList = getTimeHistory => {
     const destColumn = destination.droppableId
 
     if (sourceColumn === 'inProgress' && destColumn === 'done') {
-      const timeHistory = getTimeHistory(draggableId, history)
+      const timeHistory = getTimeHistory(draggableId, taskHistory)
       return dispatch(checkTask(draggableId, timeHistory, destColumn))
     }
 

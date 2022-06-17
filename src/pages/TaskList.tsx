@@ -8,12 +8,14 @@ import { useAppDispatch } from '../hooks'
 const TaskList = () => {
   const dispatch = useAppDispatch()
   const { taskHistory, handleCountDown, getTimeHistory } = useTaskHistory()
-  const { columns, onDragEnd } = useTaskList(getTimeHistory)
+  const { columns, onDragEnd } = useTaskList()
 
   return (
     <div>
       <div className="d-flex justify-content-md-center">
-        <DragDropContext onDragEnd={result => onDragEnd(result, taskHistory)}>
+        <DragDropContext
+          onDragEnd={result => onDragEnd(result, taskHistory, getTimeHistory)}
+        >
           {Object.entries(columns).map(([columnId, column]) => (
             <div
               className="d-flex flex-column align-items-center"
