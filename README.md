@@ -1,4 +1,4 @@
-# Productivity App new feature
+# Productivity App
 ### Requirements
 
 - Node.js 16.15.1
